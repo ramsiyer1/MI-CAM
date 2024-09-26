@@ -28,8 +28,8 @@ def smoothen_cam(cam, method, kernel_size=11, sigma=7):
 
   return smoothed_cam
 
-def get_mi_cam(model, image, layer_name):
-  x = image.img_to_array(image)
+def get_mi_cam(model, img, layer_name):
+  x = image.img_to_array(img)
   x = np.expand_dims(x, axis=0)
   mi_cam_model = tf.keras.models.Model(model.inputs, model.get_layer(layer_name).output)
   feature = mi_cam_model.predict(x)
@@ -41,7 +41,7 @@ def get_mi_cam(model, image, layer_name):
   upsampled_feature_map = upsample_layer(feature)
   upsampled_feature_map_1 = tf.image.resize(upsampled_feature_map, (224,224))
   #convert image to grayscale and flatten both image and feature maps.
-  y = image.img_to_array(tf.image.rgb_to_grayscale(image))
+  y = image.img_to_array(tf.image.rgb_to_grayscale(img))
   image_flattened = y.flatten()
   entropy_image = entropy(image_flattened)
   #calculate mutual information scores
