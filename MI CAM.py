@@ -55,4 +55,5 @@ def get_mi_cam(model, img, layer_name):
     final_output = final_output + (mutual_information[i] * np.array(upsampled_feature_map_1[:,:,:,i]))
   final_output_resized = np.squeeze(final_output)
   smoothed_cam = smoothen_cam(final_output_resized, 'gaussian', kernel_size=11, sigma=7)
+  smoothed_cam = np.max(smoothed_cam, 0)
   return smoothed_cam  
